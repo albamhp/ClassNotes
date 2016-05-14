@@ -10,9 +10,10 @@ import java.util.List;
 
 public class FTPUtils {
 
-    private static FTPClient ftp = new FTPClient();
+    private static FTPClient ftp;   // = new FTPClient();
 
     static {
+        ftp = new FTPClient();
         try {
             ftp.connect("128.199.87.171");
             ftp.login("anonymous", "classnote");
