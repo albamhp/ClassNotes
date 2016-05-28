@@ -23,6 +23,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String dir = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +36,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<String> courses = FTPUtils.getOrError(FTPUtils.getDirectories(""), this);
-
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, FTPUtils.asArray(courses));
         ListView list = (ListView) findViewById(R.id.listView);
-        list.setAdapter(itemsAdapter);
-
+        reloadList();
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick (AdapterView <?> adapter, View v,int position, long id){
-                List<String> notes = FTPUtils.getOrError(FTPUtils.getFiles((String) adapter.getItemAtPosition(position)), MainActivity.this);
-                ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, notes.toArray(new String[notes.size()]));
-                ListView list = (ListView) findViewById(R.id.listView);
-                list.setAdapter(itemsAdapter);
+                dir += "/" + adapter.getItemAtPosition(position);
+                reloadList();
             }
         });
 
@@ -64,7 +59,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        int lastIndex = dir.lastIndexOf("/");
+        if (lastIndex != -1){
+            dir = dir.substring(0, lastIndex);
+            reloadList();
+        } else {
+            this.finish();
+        }
+    }
 
+    private void reloadList() {
+        List<String> notes = FTPUtils.getOrError(FTPUtils.getFiles(dir), MainActivity.this);
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,FTPUtils.asArray(notes));
+        ListView list = (ListView) findViewById(R.id.listView);
+        list.setAdapter(itemsAdapter);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

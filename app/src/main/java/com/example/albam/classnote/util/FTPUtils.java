@@ -43,7 +43,7 @@ public class FTPUtils {
 
     public static List<String> getDirectories(String dir) {
         try {
-            return filesToStrings(ftp.listDirectories("/root/" + dir));
+            return filesToStrings(ftp.listDirectories("/root" + dir));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class FTPUtils {
 
     public static List<String> getFiles(String dir) {
         try {
-            return filesToStrings(ftp.listFiles("/root/" + dir));
+            return filesToStrings(ftp.listFiles("/root" + dir));
         } catch (IOException e) {
             e.printStackTrace();
         }
