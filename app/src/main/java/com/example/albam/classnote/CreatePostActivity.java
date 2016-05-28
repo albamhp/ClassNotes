@@ -34,6 +34,7 @@ import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -61,15 +62,13 @@ public class CreatePostActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-
         Spinner spinner1 = (Spinner) findViewById(R.id.sp_course_code);
-        List<String> ftpCourses = FTPUtils.getOrError(FTPUtils.getCoursesFromServer(), this);
-        List<String> courses = Collections.singletonList("Select Course Code");
-        courses.addAll(ftpCourses);
-
+        List<String> courses = new ArrayList<>();
+        courses.add("Select Course Code");
+        courses.addAll(FTPUtils.getOrError(FTPUtils.getDirectories(""), this));
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courses.toArray(new String[courses.size() - 1]));
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, FTPUtils.asArray(courses));
         // Specify the layout to use when the list of choices appears
         itemsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<String> courses = FTPUtils.getOrError(FTPUtils.getCoursesFromServer(), this);
+        List<String> courses = FTPUtils.getOrError(FTPUtils.getDirectories(""), this);
 
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courses.toArray(new String[courses.size() - 1]));
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, FTPUtils.asArray(courses));
         ListView list = (ListView) findViewById(R.id.listView);
         list.setAdapter(itemsAdapter);
 
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick (AdapterView <?> adapter, View v,int position, long id){
-                List<String> notes = FTPUtils.getOrError(FTPUtils.getNotesFromCourse((String) adapter.getItemAtPosition(position)), MainActivity.this);
-                ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, notes.toArray(new String[notes.size() - 1]));
+                List<String> notes = FTPUtils.getOrError(FTPUtils.getFiles((String) adapter.getItemAtPosition(position)), MainActivity.this);
+                ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, notes.toArray(new String[notes.size()]));
                 ListView list = (ListView) findViewById(R.id.listView);
                 list.setAdapter(itemsAdapter);
             }

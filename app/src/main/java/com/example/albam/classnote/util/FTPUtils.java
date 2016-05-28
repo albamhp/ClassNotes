@@ -2,9 +2,7 @@ package com.example.albam.classnote.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.widget.ArrayAdapter;
 
-import com.example.albam.classnote.MainActivity;
 import com.example.albam.classnote.R;
 
 import org.apache.commons.net.ftp.FTPClient;
@@ -31,18 +29,8 @@ public class FTPUtils {
         }
     }
 
-    public static List<String> getCoursesFromServer() {
-        try {
-            FTPFile[] courses = ftp.listDirectories("/root/");
-            List<String> courseList = new ArrayList<>();
-            for (FTPFile file : courses) {
-                courseList.add(file.getName());
-            }
-            return courseList;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static String[] asArray(List<String> files) {
+        return files.toArray(new String[files.size()]);
     }
 
     public static List<String> getOrError(List<String> strings, Activity activity) {
@@ -53,18 +41,30 @@ public class FTPUtils {
         return strings;
     }
 
-    public static List<String> getNotesFromCourse(String courses) {
+    public static List<String> getDirectories(String dir) {
         try {
-
-            FTPFile[] files = ftp.listFiles("/root/" + courses);
-            List<String> fileList = new ArrayList<>();
-            for (FTPFile file : files) {
-                fileList.add(file.getName());
-            }
-            return fileList;
+            return filesToStrings(ftp.listDirectories("/root/" + dir));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    public static List<String> getFiles(String dir) {
+        try {
+            return filesToStrings(ftp.listFiles("/root/" + dir));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static List<String> filesToStrings(FTPFile[] files) {
+        List<String> fileList = new ArrayList<>();
+        for (FTPFile file : files) {
+            fileList.add(file.getName());
+        }
+        return fileList;
+    }
+
 }
