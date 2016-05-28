@@ -45,7 +45,6 @@
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="#283593"
         android:tint="#FFF"
-        android:onClick="onFab"
         android:nestedScrollingEnabled="false" />
 
 

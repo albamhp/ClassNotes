@@ -10,13 +10,7 @@
         <item>Problems</item>
         <item>Summary</item>
     </string-array>
-    <string-array name="course_code">
-        <item>Select Course Code</item>
-        <item>DME3052</item>
-        <item>ECL3003</item>
-        <item>CSE1002</item>
-        <item>ITE1009</item>
-    </string-array>
+
     <string name="error">ERROR</string>
     <string name="could_not_connect">Could not connect to the server.</string>
 

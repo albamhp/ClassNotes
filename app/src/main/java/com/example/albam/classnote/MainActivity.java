@@ -11,15 +11,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.albam.classnote.util.FTPUtils;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +35,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<String> courses = FTPUtils.getCoursesFromServer();
-        if (courses == null) {
-            new AlertDialog.Builder(this).setMessage(R.string.could_not_connect).setTitle(R.string.error).create().show();
-            return;
-        }
+        List<String> courses = FTPUtils.getOrError(FTPUtils.getCoursesFromServer(), this);
+
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courses.toArray(new String[courses.size() - 1]));
         ListView list = (ListView) findViewById(R.id.listView);
         list.setAdapter(itemsAdapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick (AdapterView <?> adapter, View v,int position, long id){
+                List<String> notes = FTPUtils.getOrError(FTPUtils.getNotesFromCourse((String) adapter.getItemAtPosition(position)), MainActivity.this);
+                ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, notes.toArray(new String[notes.size() - 1]));
+                ListView list = (ListView) findViewById(R.id.listView);
+                list.setAdapter(itemsAdapter);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

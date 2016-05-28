@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.albam.classnote.CreatePostActivity">
+    tools:context="com.example.albam.classnote.CreatePostActivity"
+    android:nestedScrollingEnabled="false">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -25,91 +26,109 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_create_post"
-        android:weightSum="1">
+        android:id="@+id/scrollView" >
 
-        <Spinner
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/sp_course_code"
-            android:layout_weight="0"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:spinnerMode="dropdown" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:showIn="@layout/activity_create_post"
+            android:weightSum="1"
+            android:nestedScrollingEnabled="true">
 
-        <EditText android:id="@+id/edit_Title"
-            android:layout_weight="0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint=" Title"
-            android:layout_margin="5dp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="2.70" />
 
-        <EditText android:id="@+id/edit_Unit"
-            android:layout_margin="5dp"
-            android:layout_weight="0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint=" Unit" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sp_course_code"
+                android:layout_weight="0"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
+                android:spinnerMode="dropdown" />
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/sp_category"
-            android:spinnerMode="dropdown"
-            android:layout_weight="0"
-            android:fadeScrollbars="false"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp" />
+            <EditText android:id="@+id/edit_Title"
+                android:layout_weight="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=" Title"
+                android:layout_margin="5dp" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pick_date"
-            android:onClick="showDatePickerDialog"
-            android:layout_gravity="center_horizontal"
-            android:focusableInTouchMode="false"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:backgroundTint="#FFFFFF"
-            android:id="@+id/pick_date" />
+            <EditText android:id="@+id/edit_Unit"
+                android:layout_margin="5dp"
+                android:layout_weight="0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=" Unit" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.46" />
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sp_category"
+                android:spinnerMode="dropdown"
+                android:layout_weight="0"
+                android:fadeScrollbars="false"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="283dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pick_date"
+                android:onClick="showDatePickerDialog"
+                android:layout_gravity="center_horizontal"
+                android:focusableInTouchMode="false"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:backgroundTint="#FFFFFF"
+                android:id="@+id/pick_date" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_gravity="center_horizontal" />
+
+
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="FILE"
-                android:id="@+id/button_attatch"
+                android:id="@+id/button_attach"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="attachFile"/>
 
-            <Button
-                android:id="@+id/button_save"
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="SAVE"
-                style="@style/Widget.AppCompat.Button.Borderless"/>
+                android:layout_gravity="center_horizontal|left|top"
+                android:padding="20dp"
+                android:layout_weight="2.70">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0" />
+
+            </FrameLayout>
 
             <Button
                 android:layout_width="match_parent"
@@ -119,10 +138,12 @@
                 android:id="@+id/button_post"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_weight="1"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:onClick="postOnServer"/>
+
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
 
