@@ -1,11 +1,15 @@
 package com.example.albam.classnote;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,12 +22,18 @@ import android.widget.ListView;
 
 import com.example.albam.classnote.util.FTPUtils;
 
+import org.apache.commons.net.ftp.FTP;
+
 import java.lang.reflect.Array;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private String dir = "";
+
+    private String fileDownload = "";
+
+    private static int PERMISSION_WRITE_TO_EXTERNAL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,25 +48,51 @@ public class MainActivity extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.listView);
         reloadList();
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        if (list != null) {
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick (AdapterView <?> adapter, View v,int position, long id){
-                dir += "/" + adapter.getItemAtPosition(position);
-                reloadList();
-            }
-        });
+                @Override
+                public void onItemClick (AdapterView <?> adapter, View v,int position, long id){
+                    if (FTPUtils.isFile(dir, adapter.getItemAtPosition(position) + "")) {
+                        fileDownload = adapter.getItemAtPosition(position) + "";
+                        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE_TO_EXTERNAL);
+                        } else {
+                            startDownload();
+                        }
+                    } else {
+                        dir += "/" + adapter.getItemAtPosition(position);
+                        reloadList();
+                    }
+
+                }
+            });
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
 
+                }
+            });
+        }
+
+    }
+
+    private void startDownload() {
+        FTPUtils.downloadFile(dir, fileDownload + "", MainActivity.this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == PERMISSION_WRITE_TO_EXTERNAL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startDownload();
             }
-        });
-
-
+        }
     }
 
     @Override
@@ -74,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> notes = FTPUtils.getOrError(FTPUtils.getFiles(dir), MainActivity.this);
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,FTPUtils.asArray(notes));
         ListView list = (ListView) findViewById(R.id.listView);
-        list.setAdapter(itemsAdapter);
+        if (list != null) list.setAdapter(itemsAdapter);
     }
 
     @Override

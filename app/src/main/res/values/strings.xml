@@ -13,5 +13,9 @@
 
     <string name="error">ERROR</string>
     <string name="could_not_connect">Could not connect to the server.</string>
+    <string name="file_downloaded">File has been downloaded successfully.</string>
+    <string name="file_not_downloaded">File could not be downloaded.</string>
+    <string name="file_loaded">File has been loaded successfully.</string>
+    <string name="file_not_loaded">File could not be loaded.</string>
 
 </resources>

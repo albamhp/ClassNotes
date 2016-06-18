@@ -20,9 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -32,8 +34,11 @@ import com.example.albam.classnote.util.FTPUtils;
 
 import org.apache.commons.net.ftp.FTPClient;
 
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -43,6 +48,7 @@ import java.util.List;
 public class CreatePostActivity extends AppCompatActivity {
 
     private static final int READ_REQUEST_CODE = 42;
+    Uri uri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +125,7 @@ public class CreatePostActivity extends AppCompatActivity {
             // Instead, a URI to that document will be contained in the return intent
             // provided to this method as a parameter.
             // Pull that URI using resultData.getData().
-            Uri uri = null;
+
             if (resultData != null) {
                 uri = resultData.getData();
                 ImageView imgView = (ImageView) findViewById(R.id.imageView);
@@ -147,7 +153,10 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
     public void postOnServer(View view) {
-
+        Spinner spinner1 = (Spinner) findViewById(R.id.sp_course_code);
+        Spinner spinner = (Spinner) findViewById(R.id.sp_category);
+        EditText name = (EditText) findViewById(R.id.edit_Title);
+        FTPUtils.uploadFile(uri, "/" + spinner1.getSelectedItem(), name.getText() + "" , CreatePostActivity.this);
     }
 
     public void showDatePickerDialog(View v) {
