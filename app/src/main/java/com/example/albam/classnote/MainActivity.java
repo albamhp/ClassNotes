@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.albam.classnote.util.CustomAdapter;
 import com.example.albam.classnote.util.FTPUtils;
 
 import org.apache.commons.net.ftp.FTP;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadList() {
         List<String> notes = FTPUtils.getOrError(FTPUtils.getFiles(dir), MainActivity.this);
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1,FTPUtils.asArray(notes));
+        CustomAdapter itemsAdapter = new CustomAdapter(MainActivity.this, android.R.layout.simple_list_item_1,FTPUtils.asArray(notes));
         ListView list = (ListView) findViewById(R.id.listView);
         if (list != null) list.setAdapter(itemsAdapter);
     }

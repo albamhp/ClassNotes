@@ -113,6 +113,14 @@
                 android:onClick="attachFile"/>
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="2.70"
+                android:textAlignment="center" />
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

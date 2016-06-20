@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albam.classnote.util.FTPUtils;
@@ -39,6 +40,7 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -129,7 +131,9 @@ public class CreatePostActivity extends AppCompatActivity {
             if (resultData != null) {
                 uri = resultData.getData();
                 ImageView imgView = (ImageView) findViewById(R.id.imageView);
+                TextView textView = (TextView) findViewById(R.id.textView);
                 try {
+                    textView.setText(uri + "");
                     imgView.setImageBitmap(getBitmapFromUri(uri));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -156,7 +160,10 @@ public class CreatePostActivity extends AppCompatActivity {
         Spinner spinner1 = (Spinner) findViewById(R.id.sp_course_code);
         Spinner spinner = (Spinner) findViewById(R.id.sp_category);
         EditText name = (EditText) findViewById(R.id.edit_Title);
-        FTPUtils.uploadFile(uri, "/" + spinner1.getSelectedItem(), name.getText() + "" , CreatePostActivity.this);
+        EditText unit = (EditText) findViewById(R.id.edit_Unit);
+        Calendar cal = DatePickerFragment.getDate();
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
+        FTPUtils.uploadFile(uri, "/" + spinner1.getSelectedItem(), unit.getText() + "-" + name.getText() + "_" + spinner.getSelectedItem() + "_" + format.format(cal.getTime()), CreatePostActivity.this);
     }
 
     public void showDatePickerDialog(View v) {
@@ -178,7 +185,7 @@ public class CreatePostActivity extends AppCompatActivity {
             cal.set(year, month, day);
         }
 
-        public Calendar getDate() {
+        public static Calendar getDate() {
             return cal;
         }
 
