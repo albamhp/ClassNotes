@@ -13,6 +13,7 @@ import android.webkit.MimeTypeMap;
 
 import com.example.albam.classnote.R;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -38,6 +39,7 @@ public class FTPUtils {
             ftp.connect("128.199.131.115");
             ftp.login("anonymous", "classnote");
             ftp.enterLocalPassiveMode();
+            ftp.setFileType(FTP.BINARY_FILE_TYPE);
         } catch (IOException e) {
             e.printStackTrace();
         }

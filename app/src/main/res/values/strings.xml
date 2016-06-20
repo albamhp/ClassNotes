@@ -18,4 +18,6 @@
     <string name="file_loaded">File has been loaded successfully.</string>
     <string name="file_not_loaded">File could not be loaded.</string>
 
+    <string name="missing_fields">You need to fill up all the fields</string>
+
 </resources>

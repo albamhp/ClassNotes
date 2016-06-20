@@ -133,7 +133,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 ImageView imgView = (ImageView) findViewById(R.id.imageView);
                 TextView textView = (TextView) findViewById(R.id.textView);
                 try {
-                    textView.setText(uri + "");
+                    textView.setText(uri.getEncodedPath());
                     imgView.setImageBitmap(getBitmapFromUri(uri));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -157,13 +157,21 @@ public class CreatePostActivity extends AppCompatActivity {
 
 
     public void postOnServer(View view) {
-        Spinner spinner1 = (Spinner) findViewById(R.id.sp_course_code);
-        Spinner spinner = (Spinner) findViewById(R.id.sp_category);
+        Spinner spinner = (Spinner) findViewById(R.id.sp_course_code);
+        Spinner spinner1 = (Spinner) findViewById(R.id.sp_category);
+
         EditText name = (EditText) findViewById(R.id.edit_Title);
         EditText unit = (EditText) findViewById(R.id.edit_Unit);
+
+        if (spinner.getSelectedItemPosition() == 0 || spinner1.getSelectedItemPosition() == 0
+                || unit.getText().length() == 0 || name.getText().length() == 0 || uri == null) {
+            new AlertDialog.Builder(this).setMessage(R.string.missing_fields).create().show();
+            return;
+        }
+
         Calendar cal = DatePickerFragment.getDate();
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
-        FTPUtils.uploadFile(uri, "/" + spinner1.getSelectedItem(), unit.getText() + "-" + name.getText() + "_" + spinner.getSelectedItem() + "_" + format.format(cal.getTime()), CreatePostActivity.this);
+        FTPUtils.uploadFile(uri, "/" + spinner.getSelectedItem(), unit.getText() + "-" + name.getText() + "_" + spinner1.getSelectedItem() + "_" + format.format(cal.getTime()), CreatePostActivity.this);
     }
 
     public void showDatePickerDialog(View v) {

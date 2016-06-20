@@ -1,6 +1,7 @@
 package com.example.albam.classnote.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -40,11 +41,12 @@ public class CustomAdapter extends ArrayAdapter<String> {
             LinearLayout general = new LinearLayout(mContext);
             general.setOrientation(LinearLayout.VERTICAL);
             general.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            general.setPadding(30, 30, 30, 30);
 
             LinearLayout horizontal = new LinearLayout(mContext);
             horizontal.setOrientation(LinearLayout.HORIZONTAL);
             horizontal.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            horizontal.setWeightSum(1);
+            horizontal.setWeightSum(1f);
 
             TextView name = new TextView(mContext);
             name.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -56,15 +58,15 @@ public class CustomAdapter extends ArrayAdapter<String> {
             name.setText(nameText);
 
             TextView category = new TextView(mContext);
-            category.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.8f));
+            category.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             category.setTextAppearance(mContext, android.R.style.TextAppearance_Small);
             category.setText(split[split.length - 2]);
 
             TextView date = new TextView(mContext);
-            date.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.2f));
+            date.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             date.setTextAppearance(mContext, android.R.style.TextAppearance_Small);
             date.setGravity(View.TEXT_ALIGNMENT_TEXT_END);
-            date.setText(split[split.length - 1].substring(0, split[split.length - 1].lastIndexOf(".") - 1));
+            date.setText(split[split.length - 1].substring(0, split[split.length - 1].lastIndexOf(".")));
 
             general.addView(name);
             horizontal.addView(category);
